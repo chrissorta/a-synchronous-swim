@@ -1,10 +1,28 @@
-(function() {
+
+
+(function () {
 
   const serverUrl = 'http://127.0.0.1:3000';
 
   //
   // TODO: build the swim command fetcher here
   //
+  const ajaxGetDirections = () => {
+
+    $.ajax({
+      type: 'GET',
+      url: serverUrl,
+      success: (data) => SwimTeam.move(data),
+      error: function (xhr, status, error) {
+        var errorMessage = xhr.status + ': ' + xhr.statusText
+        console.log('Error - ' + errorMessage);
+      },
+      complete: console.log('hello')
+    })
+  }
+
+  //ajaxGetDirections();
+  setInterval(ajaxGetDirections, 3000);
 
   /////////////////////////////////////////////////////////////////////
   // The ajax file uplaoder is provided for your convenience!
@@ -17,7 +35,7 @@
     $.ajax({
       type: 'POST',
       data: formData,
-      url: 'FILL_ME_IN',
+      url: serverUrl,
       cache: false,
       contentType: false,
       processData: false,
@@ -25,10 +43,11 @@
         // reload the page
         window.location = window.location.href;
       }
+
     });
   };
 
-  $('form').on('submit', function(e) {
+  $('form').on('submit', function (e) {
     e.preventDefault();
 
     var form = $('form .file')[0];
